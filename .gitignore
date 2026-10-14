@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+.joke-deck.json
+.brief-board.json
+.brief-board.json.tmp
+.brief-server.log

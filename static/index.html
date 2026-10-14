@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Brief</title>
+  <script>
+    (function () {
+      var saved = "";
+      try { saved = localStorage.getItem("brief.theme") || ""; } catch (e) {}
+      var theme = saved === "dark" || saved === "light"
+        ? saved
+        : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+      var meta = document.querySelector('meta[name="color-scheme"]');
+      if (meta) meta.content = theme;
+    })();
+  </script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect fill='%23b86112' width='16' height='16'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="thread" aria-hidden="true"></div>
+  <div class="wrap">
+    <header class="mast" id="mast"></header>
+    <p class="brief-lede" id="brief-lede" hidden></p>
+    <main class="board" id="board" aria-live="polite"></main>
+    <p class="colophon">Prices via Yahoo Finance · Headlines via Google News · Weather via Open-Meteo · Prints via Forex Factory · Debt via the U.S. Treasury · Jokes via icanhazdadjoke</p>
+  </div>
+  <div class="dock-wrap">
+    <div class="dock" id="dock">
+      <p class="reply" id="reply" aria-live="polite"></p>
+      <div class="add-menu" id="add-menu" hidden>
+        <div class="add-kinds" role="group" aria-label="What to add">
+          <button type="button" class="add-kind" data-kind="ticker" aria-pressed="true">Ticker</button>
+          <button type="button" class="add-kind" data-kind="news" aria-pressed="false">News</button>
+          <button type="button" class="add-kind" data-kind="widget" aria-pressed="false">Widget</button>
+        </div>
+        <label class="sr" for="add-query" id="add-label">Ticker</label>
+        <input id="add-query" maxlength="80" autocomplete="off" placeholder="NVDA" />
+        <p class="add-hint" id="add-hint">Symbol or company. Enter adds the change.</p>
+        <div class="add-actions" data-panel="ticker" role="group" aria-label="What to add for the ticker">
+          <button type="button" class="add-go" data-add="change" aria-pressed="true">Change</button>
+          <button type="button" class="add-go" data-add="chart" aria-pressed="false">Chart</button>
+          <button type="button" class="add-go" data-add="news" aria-pressed="false">News</button>
+          <button type="button" class="add-go" data-add="both" aria-pressed="false">Chart and news</button>
+        </div>
+        <div class="add-actions" data-panel="news" hidden>
+          <button type="button" class="add-go add-go-primary" data-add="headlines">Add headlines</button>
+        </div>
+        <div class="add-actions" data-panel="widget" hidden>
+          <button type="button" class="add-go" data-add="today">Today</button>
+          <button type="button" class="add-go" data-add="overnight">Markets</button>
+          <button type="button" class="add-go" data-add="weather">Weather</button>
+          <button type="button" class="add-go" data-add="joke">Joke</button>
+          <button type="button" class="add-go" data-add="debt">US debt</button>
+          <button type="button" class="add-go" data-add="btc-chart">Bitcoin chart</button>
+          <button type="button" class="add-go" data-add="btc-news">Bitcoin news</button>
+        </div>
+      </div>
+      <form id="prompt-form">
+        <div class="dock-row">
+          <button type="button" class="add-toggle" id="add-toggle" aria-expanded="false" aria-controls="add-menu">Add</button>
+          <label class="sr" for="prompt">Ask Grok to add a widget</label>
+          <input id="prompt" name="prompt" maxlength="500" autocomplete="off" placeholder="Ask Grok to add a widget — “NVDA this week”" />
+          <button type="submit" id="ask">Ask</button>
+        </div>
+        <div class="dock-meta">
+          <div class="chips" id="chips"></div>
+          <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">Night</button>
+          <p class="grok-state" id="grok-state"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+  <noscript>Brief needs JavaScript. Start it with python server.py and open the printed URL.</noscript>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
